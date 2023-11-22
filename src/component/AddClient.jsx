@@ -5,19 +5,52 @@ import { useNavigate } from "react-router-dom";
 
 const AddClient = () => {
   const [cliente, setCliente] = useState("");
-  const [IndirizzoLegale, setIndirizzoLegale] = useState("");
-  const [IndirizzoOperativo, Operativo] = useState("");
+  const [sedeLegale, setSedeLegale] = useState("");
+  const [sedeOperativa, setSedeOperativa] = useState("");
+  const [province, setProvince] = useState([]);
+  const [comuni, setComuni] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  useEffect(() => {}, []);
+
   useEffect(() => {
     setCliente({
+      nomeContatto: "",
+      cognomeContatto: "",
+      telefonoContatto: "",
+      emailContatto: "",
       email: "",
-      password: "",
+      telefono: "",
+      pec: "",
+      partitaIva: "",
+      ragioneSociale: "",
+      tipoCliente: "",
+      fatturaAnnuale: "",
+    });
+    setSedeLegale({
+      via: "",
+      civico: "",
+      cap: "",
+      provincia: "",
+      comuneId: "",
+    });
+    setSedeOperativa({
+      via: "",
+      civico: "",
+      cap: "",
+      provincia: "",
+      comuneId: "",
     });
   }, []);
 
-  const changeInfo = (value, name) => {
+  const changeCliente = (value, name) => {
+    setCliente({ ...cliente, [name]: value });
+  };
+  const changeSedeLegale = (value, name) => {
+    setCliente({ ...cliente, [name]: value });
+  };
+  const changeSedeOperativa = (value, name) => {
     setCliente({ ...cliente, [name]: value });
   };
   return (
@@ -39,8 +72,8 @@ const AddClient = () => {
 
                   <Form.Control
                     type="text"
-                    value={info.nome}
-                    onChange={(e) => changeInfo(e.target.value, "nome")}
+                    value={cliente.nome}
+                    onChange={(e) => changeCliente(e.target.value, "nomeContatto")}
                     placeholder="inserisci Nome"
                   />
                 </Form.Group>
@@ -53,51 +86,159 @@ const AddClient = () => {
 
                   <Form.Control
                     type="text"
-                    value={info.cognome}
-                    onChange={(e) => changeInfo(e.target.value, "cognome")}
+                    value={cliente.cognome}
+                    onChange={(e) => changeCliente(e.target.value, "cognomeContatto")}
                     placeholder="inserisci Cognome"
                   />
                 </Form.Group>
               </Col>
               <Col xs="6">
                 <Form.Group className="mb-3  text-start">
-                  <Form.Label column sm="2">
-                    Username
+                  <Form.Label column sm="12">
+                    Email Contatto
                   </Form.Label>
                   <Form.Control
                     type="text"
-                    value={info.username}
-                    onChange={(e) => changeInfo(e.target.value, "username")}
-                    placeholder="inserisci Username"
+                    value={cliente.emailContatto}
+                    onChange={(e) => changeCliente(e.target.value, "emailContatto")}
+                    placeholder="inserisci emailContatto"
+                  />
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group className="mb-3  text-start">
+                  <Form.Label column sm="12">
+                    Email Aziendale
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={cliente.email}
+                    onChange={(e) => changeCliente(e.target.value, "email")}
+                    placeholder="inserisci email Azienda"
                   />
                 </Form.Group>
               </Col>
               <Col xs="6">
                 <Form.Group className="mb-3  text-start">
-                  <Form.Label column sm="2">
-                    E-mail
+                  <Form.Label column sm="12">
+                    Pec
                   </Form.Label>
                   <Form.Control
                     type="text"
-                    value={info.email}
-                    onChange={(e) => changeInfo(e.target.value, "email")}
-                    placeholder="inserisci un e-mail"
+                    value={cliente.pec}
+                    onChange={(e) => changeCliente(e.target.value, "pec")}
+                    placeholder="inserisci email pec"
                   />
                 </Form.Group>
               </Col>
               <Col xs="6">
                 <Form.Group className="mb-3  text-start">
-                  <Form.Label column sm="2">
-                    Password
+                  <Form.Label column sm="12">
+                    Telefono
                   </Form.Label>
                   <Form.Control
                     type="text"
-                    value={info.password}
-                    onChange={(e) => changeInfo(e.target.value, "password")}
-                    placeholder="inserisci un Password"
+                    value={cliente.telefono}
+                    onChange={(e) => changeCliente(e.target.value, "telefono")}
+                    placeholder="inserisci un telefono dell azienda"
                   />
                 </Form.Group>
               </Col>
+              <Col xs="6">
+                <Form.Group className="mb-3  text-start">
+                  <Form.Label column sm="12">
+                    Telefono Contatto
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={cliente.telefonoContatto}
+                    onChange={(e) => changeCliente(e.target.value, "telefonoContatto")}
+                    placeholder="inserisci un telefono del contatto"
+                  />
+                </Form.Group>
+              </Col>
+              <Col xs="6">
+                <Form.Group className="mb-3  text-start">
+                  <Form.Label column>Partita Iva</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={cliente.partitaIva}
+                    onChange={(e) => changeCliente(e.target.value, "partitaIva")}
+                    placeholder="inserisci la P.Iva"
+                  />
+                </Form.Group>
+              </Col>
+              <Col xs="12">
+                <hr />
+                <h5>Sede Legale</h5>
+              </Col>
+              <Col xs="6">
+                <Form.Group className="mb-3  text-start">
+                  <Form.Label column>Via</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={sedeLegale.via}
+                    onChange={(e) => changeSedeLegale(e.target.value, "via")}
+                    placeholder="inserisci la P.Iva"
+                  />
+                </Form.Group>
+              </Col>
+              <Col xs="6">
+                <Form.Group className="mb-3  text-start">
+                  <Form.Label column>Civico</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={sedeLegale.civico}
+                    onChange={(e) => changeSedeLegale(e.target.value, "civico")}
+                    placeholder="inserisci la P.Iva"
+                  />
+                </Form.Group>
+              </Col>
+              <Col xs="6">
+                <Form.Group className="mb-3  text-start">
+                  <Form.Label column>Cap</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={sedeLegale.cap}
+                    onChange={(e) => changeSedeLegale(e.target.value, "cap")}
+                    placeholder="inserisci la P.Iva"
+                  />
+                </Form.Group>
+              </Col>
+              <Col xs="6">
+                <Form.Label column>Provincia</Form.Label>
+                <Form.Select
+                  className="mb-3  text-start"
+                  onChange={(e) => {
+                    changeSedeLegale(e.target.value, "provincia");
+                    fetchComuni();
+                  }}
+                  aria-label="Default select example"
+                >
+                  <option>Seleziona Provincia</option>
+                  {province.map((province, index) => (
+                    <option key={index} value={province.provinciaId}>
+                      {province.provincia}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Col>
+              <Col xs="6">
+                <Form.Label column>Comune</Form.Label>
+                <Form.Select
+                  className="mb-3  text-start"
+                  onChange={(e) => changeSedeLegale(e.target.value, "comuneId")}
+                  aria-label="Default select example"
+                >
+                  <option>Seleziona Provincia</option>
+                  {province.map((province, index) => (
+                    <option key={index} value={comuni.comuneId}>
+                      {province.nomeComune}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Col>
+
               <Button>Registrati</Button>
             </Row>
           </Form>
