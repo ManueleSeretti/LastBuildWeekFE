@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const AddClient = () => {
@@ -11,8 +11,28 @@ const AddClient = () => {
   const [comuni, setComuni] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const token = useSelector((state) => state.content);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log(token.accessToken);
+
+    const fetchProvincie = async () => {
+      try {
+        const resp = await fetch("http://localhost:3001/indirizzi/allProvincie", {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + token.accessToken,
+            "Content-type": "application/json",
+          },
+        });
+        const data = await resp.json();
+        setProvince(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchProvincie();
+  }, []);
 
   useEffect(() => {
     setCliente({
@@ -53,6 +73,24 @@ const AddClient = () => {
   const changeSedeOperativa = (value, name) => {
     setCliente({ ...cliente, [name]: value });
   };
+
+  const fetchComuni = async (provincia) => {
+    try {
+      const resp = await fetch("http://localhost:3001/indirizzi/provincie?provincia=" + provincia, {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token.accessToken,
+          "Content-type": "application/json",
+        },
+      });
+      const data = await resp.json();
+      console.log(data);
+      setComuni(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Container>
       <h1>Aggiungi Cliente</h1>
@@ -211,7 +249,9 @@ const AddClient = () => {
                   className="mb-3  text-start"
                   onChange={(e) => {
                     changeSedeLegale(e.target.value, "provincia");
-                    fetchComuni();
+
+                    fetchComuni(e.target.selectedOptions[0].text);
+                    console.log(e.target.selectedOptions[0].text);
                   }}
                   aria-label="Default select example"
                 >
@@ -231,15 +271,15 @@ const AddClient = () => {
                   aria-label="Default select example"
                 >
                   <option>Seleziona Provincia</option>
-                  {province.map((province, index) => (
-                    <option key={index} value={comuni.comuneId}>
-                      {province.nomeComune}
+                  {comuni.map((comune, index) => (
+                    <option key={index} value={comune.comuneId}>
+                      {comune.nomeComune}
                     </option>
                   ))}
                 </Form.Select>
               </Col>
 
-              <Button>Registrati</Button>
+              <Button>Registra cliente</Button>
             </Row>
           </Form>
         </Col>
