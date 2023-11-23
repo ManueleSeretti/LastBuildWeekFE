@@ -8,6 +8,7 @@ import SignUp from "./component/SignUp";
 import Welcome from "./component/Welcome";
 import AddClient from "./component/AddClient";
 import Fatture from "./component/Fatture";
+import Clienti from "./component/Clienti";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/addClient" element={<AddClient />} />
           <Route path="/fatture" element={<Fatture />} />
+          <Route path="/clienti" element={<Clienti />} />
         </Routes>
       </BrowserRouter>
     </div>
