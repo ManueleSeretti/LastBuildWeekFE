@@ -27,9 +27,10 @@ const Welcome = () => {
 
         <p>Benvenuto nella homepage. Scegli cosa fare:</p>
 
-        <Button onClick={() => navigate("/addClient")}>aggiungi cliente</Button>
-        <Button onClick={() => navigate("/fatture")}>Fatture</Button>
-      </Container>
+      <Button onClick={() => navigate("/addClient")}>aggiungi cliente</Button>
+      <Button onClick={() => navigate("/clienti")}>Vedi clienti</Button>
+      <Button onClick={() => navigate("/fatture")}>Fatture</Button>
+    </Container>
     </>
   );
 };
