@@ -39,19 +39,22 @@ const Fatture = () => {
 
   const fetchAnno = async () => {
     try {
-      const resp = await fetch(`http://localhost:3001/fatture/annoFattura?anno=${anno}`, {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + token.accessToken,
-          "Content-type": "application/json",
-        },
-      });
+      const resp = await fetch(
+        `http://localhost:3001/fatture/annoFattura?anno=${anno}&page=${page}&size=${size}&orderBy=${order}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + token.accessToken,
+            "Content-type": "application/json",
+          },
+        }
+      );
       const data = await resp.json();
-      setFatture(data);
-      // setSize(data.pageable.pageSize);
-      // setPage(data.pageable.pageNumber);
-      // setTotaleFatt(data.totalElements);
-      // setTotalPage(data.totalPages);
+      setFatture(data.content);
+      setSize(data.pageable.pageSize);
+      setPage(data.pageable.pageNumber);
+      setTotaleFatt(data.totalElements);
+      setTotalPage(data.totalPages);
     } catch (error) {
       console.log(error);
     }
@@ -67,11 +70,11 @@ const Fatture = () => {
         },
       });
       const data = await resp.json();
-      setFatture(data);
-      // setSize(data.pageable.pageSize);
-      // setPage(data.pageable.pageNumber);
-      // setTotaleFatt(data.totalElements);
-      // setTotalPage(data.totalPages);
+      setFatture(data.content);
+      setSize(data.pageable.pageSize);
+      setPage(data.pageable.pageNumber);
+      setTotaleFatt(data.totalElements);
+      setTotalPage(data.totalPages);
     } catch (error) {
       console.log(error);
     }
@@ -87,11 +90,11 @@ const Fatture = () => {
         },
       });
       const data = await resp.json();
-      setFatture(data);
-      // setSize(data.pageable.pageSize);
-      // setPage(data.pageable.pageNumber);
-      // setTotaleFatt(data.totalElements);
-      // setTotalPage(data.totalPages);
+      setFatture(data.content);
+      setSize(data.pageable.pageSize);
+      setPage(data.pageable.pageNumber);
+      setTotaleFatt(data.totalElements);
+      setTotalPage(data.totalPages);
     } catch (error) {
       console.log(error);
     }
@@ -110,11 +113,11 @@ const Fatture = () => {
         }
       );
       const data = await resp.json();
-      setFatture(data);
-      // setSize(data.pageable.pageSize);
-      // setPage(data.pageable.pageNumber);
-      // setTotaleFatt(data.totalElements);
-      // setTotalPage(data.totalPages);
+      setFatture(data.content);
+      setSize(data.pageable.pageSize);
+      setPage(data.pageable.pageNumber);
+      setTotaleFatt(data.totalElements);
+      setTotalPage(data.totalPages);
     } catch (error) {
       console.log(error);
     }
