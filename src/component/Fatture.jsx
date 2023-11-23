@@ -5,11 +5,15 @@ import { useSelector } from "react-redux";
 
 const Fatture = () => {
   const [fatture, setFatture] = useState([]);
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(10);
+  const [order, setOrder] = useState("id");
+  const [totaleFatt, setTotaleFatt] = useState([]);
   const token = useSelector((state) => state.content);
 
   const fetchAllFatture = async () => {
     try {
-      const resp = await fetch("http://localhost:3001/fatture", {
+      const resp = await fetch("http://localhost:3001/fatture?page=" + page + "&size=" + size + "&orderBy=" + order, {
         method: "GET",
         headers: {
           Authorization: "Bearer " + token.accessToken,
@@ -18,6 +22,9 @@ const Fatture = () => {
       });
       const data = await resp.json();
       setFatture(data.content);
+      setSize(data.pageable.pageSize);
+      setPage(data.pageable.pageNumber);
+      setTotaleFatt(data.totalElements);
     } catch (error) {
       console.log(error);
     }
@@ -60,7 +67,9 @@ const Fatture = () => {
             <option>50</option>
           </Form.Select>
         </div>
-        <div>Risultati da 1 a 10 di 50</div>
+        <div>
+          Risultati da {page + "1"} a {size} di {totaleFatt}
+        </div>
         <div>
           <Button>avanti</Button>
           <Button>indietro</Button>
