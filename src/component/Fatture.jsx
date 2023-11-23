@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 const Fatture = () => {
   const [fatture, setFatture] = useState([]);
   const [page, setPage] = useState(0);
+  const [totalPage, setTotalPage] = useState(0);
   const [size, setSize] = useState(10);
   const [order, setOrder] = useState("id");
   const [totaleFatt, setTotaleFatt] = useState([]);
@@ -13,7 +14,7 @@ const Fatture = () => {
 
   const fetchAllFatture = async () => {
     try {
-      const resp = await fetch("http://localhost:3001/fatture?page=" + page + "&size=" + size + "&orderBy=" + order, {
+      const resp = await fetch(`http://localhost:3001/fatture?page=${page}&size=${size}&orderBy=${order}`, {
         method: "GET",
         headers: {
           Authorization: "Bearer " + token.accessToken,
@@ -25,14 +26,25 @@ const Fatture = () => {
       setSize(data.pageable.pageSize);
       setPage(data.pageable.pageNumber);
       setTotaleFatt(data.totalElements);
+      setTotalPage(data.totalPages);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
+
+  const handleItemsPerPageChange = (e) => {
+    const newSize = parseInt(e.target.value, 10);
+    setSize(newSize);
+    setPage(0);
+  };
+
   useEffect(() => {
     fetchAllFatture();
-  }, []);
+  }, [page, size, order, token.accessToken]);
 
   return (
     <Container>
@@ -68,11 +80,15 @@ const Fatture = () => {
           </Form.Select>
         </div>
         <div>
-          Risultati da {page + "1"} a {size} di {totaleFatt}
+          Risultati da {page * size + 1} a {Math.min((page + 1) * size, totaleFatt)} di {totaleFatt}
         </div>
         <div>
-          <Button>avanti</Button>
-          <Button>indietro</Button>
+          <Button disabled={page === 0} onClick={() => handlePageChange(page - 1)}>
+            Indietro
+          </Button>
+          <Button disabled={page === totalPage - 1} onClick={() => handlePageChange(page + 1)}>
+            Avanti
+          </Button>
         </div>
       </div>
     </Container>
