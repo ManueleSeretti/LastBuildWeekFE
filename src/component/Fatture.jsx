@@ -11,6 +11,10 @@ const Fatture = () => {
   const [order, setOrder] = useState("id");
   const [totaleFatt, setTotaleFatt] = useState([]);
   const [anno, setAnno] = useState(2023);
+  const [nome, setNome] = useState("");
+  const [status, setStatus] = useState("");
+  const [importoMinimo, setImportoMinimo] = useState("");
+  const [importoMassimo, setImportoMassimo] = useState("");
   const token = useSelector((state) => state.content);
 
   const fetchAllFatture = async () => {
@@ -43,7 +47,70 @@ const Fatture = () => {
         },
       });
       const data = await resp.json();
-      setFatture(data.content);
+      setFatture(data);
+      // setSize(data.pageable.pageSize);
+      // setPage(data.pageable.pageNumber);
+      // setTotaleFatt(data.totalElements);
+      // setTotalPage(data.totalPages);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchNome = async () => {
+    try {
+      const resp = await fetch(`http://localhost:3001/fatture/clienteid?clienteid=${nome}`, {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token.accessToken,
+          "Content-type": "application/json",
+        },
+      });
+      const data = await resp.json();
+      setFatture(data);
+      // setSize(data.pageable.pageSize);
+      // setPage(data.pageable.pageNumber);
+      // setTotaleFatt(data.totalElements);
+      // setTotalPage(data.totalPages);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchStatus = async () => {
+    try {
+      const resp = await fetch(`http://localhost:3001/fatture/statoFattura?statoFattura=${status}`, {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token.accessToken,
+          "Content-type": "application/json",
+        },
+      });
+      const data = await resp.json();
+      setFatture(data);
+      // setSize(data.pageable.pageSize);
+      // setPage(data.pageable.pageNumber);
+      // setTotaleFatt(data.totalElements);
+      // setTotalPage(data.totalPages);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchImporto = async () => {
+    try {
+      const resp = await fetch(
+        `http://localhost:3001/fatture/rangefatture?importo1=${importoMinimo}&importo2=${importoMassimo}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + token.accessToken,
+            "Content-type": "application/json",
+          },
+        }
+      );
+      const data = await resp.json();
+      setFatture(data);
       // setSize(data.pageable.pageSize);
       // setPage(data.pageable.pageNumber);
       // setTotaleFatt(data.totalElements);
@@ -64,16 +131,22 @@ const Fatture = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
 
+  const [showCliente, setShowCliente] = useState(false);
+  const handleCloseCliente = () => setShowCliente(false);
+
   const [showImporto, setShowImporto] = useState(false);
   const handleCloseImporto = () => setShowImporto(false);
+
+  const [showStatus, setShowStatus] = useState(false);
+  const handleCloseStatus = () => setShowStatus(false);
 
   return (
     <>
       <Container>
         <DropdownButton id="dropdown-basic-button" title="Filtra">
-          <Dropdown.Item>Cliente</Dropdown.Item>
-          <Dropdown.Item>Stato</Dropdown.Item>
-          <Dropdown.Item>Data</Dropdown.Item>
+          <Dropdown.Item onClick={setShowCliente}>Cliente</Dropdown.Item>
+          <Dropdown.Item onClick={setShowStatus}>Stato</Dropdown.Item>
+          <Dropdown.Item onClick={() => setOrder("dataFattura")}>Data</Dropdown.Item>
           <Dropdown.Item onClick={setShow}>Anno</Dropdown.Item>
           <Dropdown.Item onClick={setShowImporto}>Importo</Dropdown.Item>
         </DropdownButton>
@@ -138,7 +211,7 @@ const Fatture = () => {
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Inserisci anno</Form.Label>
               <Form.Control
-                type="text"
+                type="number"
                 placeholder="Inserisci anno, es: 2023"
                 autoFocus
                 onChange={(e) => setAnno(e.target.value)}
@@ -170,11 +243,21 @@ const Fatture = () => {
           <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Inserisci importo minimo</Form.Label>
-              <Form.Control type="number" placeholder="es: 12,50" autoFocus />
+              <Form.Control
+                type="number"
+                placeholder="minimo"
+                autoFocus
+                onChange={(e) => setImportoMinimo(e.target.value)}
+              />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Inserisci importo massimo</Form.Label>
-              <Form.Control type="number" placeholder="es: 1750,50" autoFocus />
+              <Form.Control
+                type="number"
+                placeholder="massimo"
+                autoFocus
+                onChange={(e) => setImportoMassimo(e.target.value)}
+              />
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -182,7 +265,74 @@ const Fatture = () => {
           <Button variant="secondary" onClick={handleCloseImporto}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleCloseImporto}>
+          <Button
+            variant="primary"
+            onClick={() => {
+              handleCloseImporto();
+              fetchImporto();
+            }}
+          >
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showCliente} onHide={handleCloseCliente}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Inserisci il nome</Form.Label>
+              <Form.Control type="number" placeholder="nome" autoFocus onChange={(e) => setNome(e.target.value)} />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseCliente}>
+            Close
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => {
+              handleCloseCliente();
+              fetchNome();
+            }}
+          >
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showStatus} onHide={handleCloseStatus}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Inserisci lo status</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="EMESSA, PAGATA, SCADUTA, RECUPERO_CREDITI"
+                autoFocus
+                onChange={(e) => setStatus(e.target.value)}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseStatus}>
+            Close
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => {
+              handleCloseStatus();
+              fetchStatus();
+            }}
+          >
             Save Changes
           </Button>
         </Modal.Footer>
