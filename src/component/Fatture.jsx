@@ -2,6 +2,7 @@ import { CTable, CTableBody, CTableDataCell, CTableHead, CTableHeaderCell, CTabl
 import { useEffect, useState } from "react";
 import { Col, Container, Button, Form, Row, DropdownButton, Dropdown, Modal } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import NavBar from "./NavBar";
 
 const Fatture = () => {
   const [fatture, setFatture] = useState([]);
@@ -145,6 +146,7 @@ const Fatture = () => {
 
   return (
     <>
+      <NavBar />
       <Container>
         <DropdownButton id="dropdown-basic-button" title="Filtra">
           <Dropdown.Item onClick={setShowCliente}>Cliente</Dropdown.Item>
