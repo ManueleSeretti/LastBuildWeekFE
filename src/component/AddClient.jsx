@@ -217,7 +217,7 @@ const AddClient = () => {
                     type="text"
                     value={sedeLegale.via}
                     onChange={(e) => changeSedeLegale(e.target.value, "via")}
-                    placeholder="inserisci la P.Iva"
+                    placeholder="inserisci la via"
                   />
                 </Form.Group>
               </Col>
@@ -228,7 +228,7 @@ const AddClient = () => {
                     type="text"
                     value={sedeLegale.civico}
                     onChange={(e) => changeSedeLegale(e.target.value, "civico")}
-                    placeholder="inserisci la P.Iva"
+                    placeholder="inserisci il civico"
                   />
                 </Form.Group>
               </Col>
@@ -239,7 +239,7 @@ const AddClient = () => {
                     type="text"
                     value={sedeLegale.cap}
                     onChange={(e) => changeSedeLegale(e.target.value, "cap")}
-                    placeholder="inserisci la P.Iva"
+                    placeholder="inserisci il cap"
                   />
                 </Form.Group>
               </Col>
@@ -270,7 +270,7 @@ const AddClient = () => {
                   onChange={(e) => changeSedeLegale(e.target.value, "comuneId")}
                   aria-label="Default select example"
                 >
-                  <option>Seleziona Provincia</option>
+                  <option>Seleziona Comune</option>
                   {comuni.map((comune, index) => (
                     <option key={index} value={comune.comuneId}>
                       {comune.nomeComune}
