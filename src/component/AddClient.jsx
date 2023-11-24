@@ -6,7 +6,7 @@ import NavBar from "./navBar";
 
 const AddClient = () => {
   const [cliente, setCliente] = useState("");
-  const [sedeLegale, setSedeLegale] = useState("");
+  const [sedeLegaleId, setSedeLegale] = useState("");
   const [sedeOperativa, setSedeOperativa] = useState("");
   const [province, setProvince] = useState([]);
   const [comuni, setComuni] = useState([]);
@@ -46,9 +46,10 @@ const AddClient = () => {
       pec: "",
       partitaIva: "",
       ragioneSociale: "",
-      tipoCliente: "",
-      fatturaAnnuale: "",
-      sedeLegale: "",
+      tipoCliente: null,
+      fatturaAnnuale: 0,
+      sedeLegaleId: 0,
+      logoAziendale: null,
     });
     setSedeLegale({
       via: "",
@@ -70,7 +71,7 @@ const AddClient = () => {
     setCliente({ ...cliente, [name]: value });
   };
   const changeSedeLegale = (value, name) => {
-    setSedeLegale({ ...sedeLegale, [name]: value });
+    setSedeLegale({ ...sedeLegaleId, [name]: value });
   };
   const changeSedeOperativa = (value, name) => {
     setSedeOperativa({ ...sedeOperativa, [name]: value });
@@ -100,39 +101,39 @@ const AddClient = () => {
           Authorization: "Bearer " + token.accessToken,
           "Content-type": "application/json",
         },
-        body: JSON.stringify(sedeLegale),
+        body: JSON.stringify(sedeLegaleId),
       });
       const data = await resp.json();
       console.log(data.id);
-      if (data) {
-        setCliente({ ...cliente, [sedeLegale]: data.id });
-        console.log(cliente);
-      } else {
-        console.log("niente risposta");
-      }
+      setCliente({ ...cliente, sedeLegaleId: Number(data.id) });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const fetchAddCliente = async () => {
+    console.log(cliente)
+    try {
+      const resp = await fetch("http://localhost:3001/clienti", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + token.accessToken,
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(cliente),
+      });
+      const data = await resp.json();
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
   };
 
+
   useEffect(() => {
-    const fetchAddCliente = async () => {
-      try {
-        const resp = await fetch("http://localhost:3001/clienti", {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer " + token.accessToken,
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify(cliente),
-        });
-        const data = await resp.json();
-        console.log(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-  }, [cliente.sedeLegale]);
+    if(cliente.sedeLegaleId !== "") {
+      fetchAddCliente();
+    }
+  }, [cliente.sedeLegaleId]);
 
   const handleSubmit = () => {
     fetchAddIndirizzo();
@@ -171,7 +172,6 @@ const AddClient = () => {
                     <Form.Label column sm="2">
                       Cognome
                     </Form.Label>
-
                     <Form.Control
                       type="text"
                       required
@@ -263,6 +263,30 @@ const AddClient = () => {
                     />
                   </Form.Group>
                 </Col>
+                <Col xs="6">
+                  <Form.Group className="mb-3  text-start">
+                    <Form.Label column>Ragione Sociale</Form.Label>
+                    <Form.Control
+                      type="text"
+                      required
+                      value={cliente.ragioneSociale}
+                      onChange={(e) => changeCliente(e.target.value, "ragioneSociale")}
+                      placeholder="inserisci la ragione sociale"
+                    />
+                  </Form.Group>
+                </Col>
+                <Col xs="6">
+                  <Form.Group className="mb-3  text-start">
+                    <Form.Label column>Fattura Annuale</Form.Label>
+                    <Form.Control
+                      type="number"
+                      required
+                      value={cliente.fatturaAnnuale}
+                      onChange={(e) => changeCliente(Number(e.target.value), "fatturaAnnuale")}
+                      placeholder="inserisci la fattura annuale"
+                    />
+                  </Form.Group>
+                </Col>
                 <Col xs="12">
                   <hr />
                   <h5>Sede Legale</h5>
@@ -273,7 +297,7 @@ const AddClient = () => {
                     <Form.Control
                       type="text"
                       required
-                      value={sedeLegale.via}
+                      value={sedeLegaleId.via}
                       onChange={(e) => changeSedeLegale(e.target.value, "via")}
                       placeholder="inserisci la via"
                     />
@@ -285,7 +309,7 @@ const AddClient = () => {
                     <Form.Control
                       type="text"
                       required
-                      value={sedeLegale.civico}
+                      value={sedeLegaleId.civico}
                       onChange={(e) => changeSedeLegale(e.target.value, "civico")}
                       placeholder="inserisci il civico"
                     />
@@ -297,7 +321,7 @@ const AddClient = () => {
                     <Form.Control
                       type="text"
                       required
-                      value={sedeLegale.cap}
+                      value={sedeLegaleId.cap}
                       onChange={(e) => changeSedeLegale(e.target.value, "cap")}
                       placeholder="inserisci il cap"
                     />
