@@ -29,7 +29,7 @@ const SignUp = () => {
         },
         body: JSON.stringify(info),
       });
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       console.log(error);
     }

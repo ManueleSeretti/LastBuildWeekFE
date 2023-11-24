@@ -181,7 +181,7 @@ const Clienti = () => {
                 <CTableDataCell>{c.telefonoContatto}</CTableDataCell>
                 <CTableDataCell>{c.partitaIva}</CTableDataCell>
                 <CTableDataCell>{c.ragioneSociale}</CTableDataCell>
-                <CTableDataCell>{c.sedeLegale === null ? "/" : c.sedeLegale.provincia}</CTableDataCell>
+                <CTableDataCell>{c.sedeLegale === null ? "/" : c.sedeLegale.comuneId.nomeProvincia}</CTableDataCell>
               </CTableRow>
             ))}
           </CTableBody>
