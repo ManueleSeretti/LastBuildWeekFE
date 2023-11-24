@@ -48,6 +48,7 @@ const AddClient = () => {
       ragioneSociale: "",
       tipoCliente: "",
       fatturaAnnuale: "",
+      sedeLegale: "",
     });
     setSedeLegale({
       via: "",
@@ -69,10 +70,10 @@ const AddClient = () => {
     setCliente({ ...cliente, [name]: value });
   };
   const changeSedeLegale = (value, name) => {
-    setCliente({ ...cliente, [name]: value });
+    setSedeLegale({ ...sedeLegale, [name]: value });
   };
   const changeSedeOperativa = (value, name) => {
-    setCliente({ ...cliente, [name]: value });
+    setSedeOperativa({ ...sedeOperativa, [name]: value });
   };
 
   const fetchComuni = async (provincia) => {
@@ -90,6 +91,51 @@ const AddClient = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+  const fetchAddIndirizzo = async () => {
+    try {
+      const resp = await fetch("http://localhost:3001/indirizzi", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + token.accessToken,
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(sedeLegale),
+      });
+      const data = await resp.json();
+      console.log(data.id);
+      if (data) {
+        setCliente({ ...cliente, [sedeLegale]: data.id });
+        console.log(cliente);
+      } else {
+        console.log("niente risposta");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchAddCliente = async () => {
+      try {
+        const resp = await fetch("http://localhost:3001/clienti", {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + token.accessToken,
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify(cliente),
+        });
+        const data = await resp.json();
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  }, [cliente.sedeLegale]);
+
+  const handleSubmit = () => {
+    fetchAddIndirizzo();
   };
 
   return (
@@ -113,6 +159,7 @@ const AddClient = () => {
 
                     <Form.Control
                       type="text"
+                      required
                       value={cliente.nome}
                       onChange={(e) => changeCliente(e.target.value, "nomeContatto")}
                       placeholder="inserisci Nome"
@@ -127,6 +174,7 @@ const AddClient = () => {
 
                     <Form.Control
                       type="text"
+                      required
                       value={cliente.cognome}
                       onChange={(e) => changeCliente(e.target.value, "cognomeContatto")}
                       placeholder="inserisci Cognome"
@@ -140,6 +188,7 @@ const AddClient = () => {
                     </Form.Label>
                     <Form.Control
                       type="text"
+                      required
                       value={cliente.emailContatto}
                       onChange={(e) => changeCliente(e.target.value, "emailContatto")}
                       placeholder="inserisci emailContatto"
@@ -153,6 +202,7 @@ const AddClient = () => {
                     </Form.Label>
                     <Form.Control
                       type="text"
+                      required
                       value={cliente.email}
                       onChange={(e) => changeCliente(e.target.value, "email")}
                       placeholder="inserisci email Azienda"
@@ -166,6 +216,7 @@ const AddClient = () => {
                     </Form.Label>
                     <Form.Control
                       type="text"
+                      required
                       value={cliente.pec}
                       onChange={(e) => changeCliente(e.target.value, "pec")}
                       placeholder="inserisci email pec"
@@ -179,6 +230,7 @@ const AddClient = () => {
                     </Form.Label>
                     <Form.Control
                       type="text"
+                      required
                       value={cliente.telefono}
                       onChange={(e) => changeCliente(e.target.value, "telefono")}
                       placeholder="inserisci un telefono dell azienda"
@@ -192,6 +244,7 @@ const AddClient = () => {
                     </Form.Label>
                     <Form.Control
                       type="text"
+                      required
                       value={cliente.telefonoContatto}
                       onChange={(e) => changeCliente(e.target.value, "telefonoContatto")}
                       placeholder="inserisci un telefono del contatto"
@@ -203,6 +256,7 @@ const AddClient = () => {
                     <Form.Label column>Partita Iva</Form.Label>
                     <Form.Control
                       type="text"
+                      required
                       value={cliente.partitaIva}
                       onChange={(e) => changeCliente(e.target.value, "partitaIva")}
                       placeholder="inserisci la P.Iva"
@@ -218,6 +272,7 @@ const AddClient = () => {
                     <Form.Label column>Via</Form.Label>
                     <Form.Control
                       type="text"
+                      required
                       value={sedeLegale.via}
                       onChange={(e) => changeSedeLegale(e.target.value, "via")}
                       placeholder="inserisci la via"
@@ -229,6 +284,7 @@ const AddClient = () => {
                     <Form.Label column>Civico</Form.Label>
                     <Form.Control
                       type="text"
+                      required
                       value={sedeLegale.civico}
                       onChange={(e) => changeSedeLegale(e.target.value, "civico")}
                       placeholder="inserisci il civico"
@@ -240,6 +296,7 @@ const AddClient = () => {
                     <Form.Label column>Cap</Form.Label>
                     <Form.Control
                       type="text"
+                      required
                       value={sedeLegale.cap}
                       onChange={(e) => changeSedeLegale(e.target.value, "cap")}
                       placeholder="inserisci il cap"
@@ -282,7 +339,7 @@ const AddClient = () => {
                   </Form.Select>
                 </Col>
 
-                <Button>Registra cliente</Button>
+                <Button onClick={() => handleSubmit()}>Registra cliente</Button>
               </Row>
             </Form>
           </Col>
