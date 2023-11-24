@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Container } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import NavBar from "./NavBar";
+import NavBar from "./navBar";
 
 const Welcome = () => {
   const [info, setInfo] = useState("");
@@ -25,12 +25,14 @@ const Welcome = () => {
       <Container>
         <h1>WELCOME</h1>
 
-        <p>Benvenuto nella homepage. Scegli cosa fare:</p>
+        <h4>Benvenuto nella homepage. Scegli cosa fare:</h4>
 
-      <Button onClick={() => navigate("/addClient")}>aggiungi cliente</Button>
-      <Button onClick={() => navigate("/clienti")}>Vedi clienti</Button>
-      <Button onClick={() => navigate("/fatture")}>Fatture</Button>
-    </Container>
+        <div className="d-flex justify-content-around">
+          <Button onClick={() => navigate("/addClient")}>Aggiungi cliente</Button>
+          <Button onClick={() => navigate("/clienti")}>Vedi clienti</Button>
+          <Button onClick={() => navigate("/fatture")}>Fatture</Button>
+        </div>
+      </Container>
     </>
   );
 };

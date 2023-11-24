@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import NavBar from "./NavBar";
+import NavBar from "./navBar";
 
 const AddClient = () => {
   const [cliente, setCliente] = useState("");

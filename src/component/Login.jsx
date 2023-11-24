@@ -64,7 +64,7 @@ const Login = () => {
                 Password
               </Form.Label>
               <Form.Control
-                type="text"
+                type="password"
                 value={info.password}
                 onChange={(e) => changeInfo(e.target.value, "password")}
                 placeholder="inserisci un Password"

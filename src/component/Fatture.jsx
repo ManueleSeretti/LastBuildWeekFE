@@ -2,7 +2,7 @@ import { CTable, CTableBody, CTableDataCell, CTableHead, CTableHeaderCell, CTabl
 import { useEffect, useState } from "react";
 import { Col, Container, Button, Form, Row, DropdownButton, Dropdown, Modal } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import NavBar from "./NavBar";
+import NavBar from "./navBar";
 
 const Fatture = () => {
   const [fatture, setFatture] = useState([]);
@@ -149,7 +149,7 @@ const Fatture = () => {
       <NavBar />
       <Container>
         <DropdownButton id="dropdown-basic-button" title="Filtra">
-          <Dropdown.Item onClick={setShowCliente}>Cliente</Dropdown.Item>
+          <Dropdown.Item onClick={setShowCliente}>Id Cliente</Dropdown.Item>
           <Dropdown.Item onClick={setShowStatus}>Stato</Dropdown.Item>
           <Dropdown.Item onClick={() => setOrder("dataFattura")}>Data</Dropdown.Item>
           <Dropdown.Item onClick={setShow}>Anno</Dropdown.Item>
@@ -289,8 +289,13 @@ const Fatture = () => {
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Inserisci il nome</Form.Label>
-              <Form.Control type="number" placeholder="nome" autoFocus onChange={(e) => setNome(e.target.value)} />
+              <Form.Label>Inserisci il'id del cliente</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="ID DEL CLIENTE"
+                autoFocus
+                onChange={(e) => setNome(e.target.value)}
+              />
             </Form.Group>
           </Form>
         </Modal.Body>

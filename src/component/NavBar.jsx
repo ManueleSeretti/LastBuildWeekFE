@@ -14,14 +14,14 @@ function NavBar() {
             width={80}
           />
         </Link>
-        <Link to="/welcome" className="navbar-brand">
+        <Link to="/" className="navbar-brand">
           Epicode Energy
         </Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Link to="/welcome" className="nav-link">
-              Home
+              Welcome
             </Link>
           </Nav>
         </Navbar.Collapse>
