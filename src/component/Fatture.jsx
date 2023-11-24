@@ -146,9 +146,9 @@ const Fatture = () => {
 
   return (
     <>
-      <NavBar />
-      <Container>
-        <DropdownButton id="dropdown-basic-button" title="Filtra">
+      <Container className="mt-1">
+        <h1>Lista Fatture</h1>
+        <DropdownButton className="mt-2" title="Filtra" variant="outline-primary">
           <Dropdown.Item onClick={setShowCliente}>Id Cliente</Dropdown.Item>
           <Dropdown.Item onClick={setShowStatus}>Stato</Dropdown.Item>
           <Dropdown.Item onClick={() => setOrder("dataFattura")}>Data</Dropdown.Item>
@@ -197,10 +197,14 @@ const Fatture = () => {
             Risultati da {page * size + 1} a {Math.min((page + 1) * size, totaleFatt)} di {totaleFatt}
           </div>
           <div>
-            <Button disabled={page === 0} onClick={() => handlePageChange(page - 1)}>
+            <Button variant="outline-primary" disabled={page === 0} onClick={() => handlePageChange(page - 1)}>
               Indietro
             </Button>
-            <Button disabled={page === totalPage - 1} onClick={() => handlePageChange(page + 1)}>
+            <Button
+              variant="outline-primary"
+              disabled={page === totalPage - 1}
+              onClick={() => handlePageChange(page + 1)}
+            >
               Avanti
             </Button>
           </div>

@@ -1,21 +1,8 @@
-import {
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-} from "@coreui/react";
+import { CTable, CTableBody, CTableDataCell, CTableHead, CTableHeaderCell, CTableRow } from "@coreui/react";
 import { useEffect, useState } from "react";
-import {
-  Container,
-  Button,
-  Form,
-  DropdownButton,
-  Dropdown,
-  Modal,
-} from "react-bootstrap";
+import { Container, Button, Form, DropdownButton, Dropdown, Modal } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 
 const Clienti = () => {
   const token = useSelector((state) => state.content);
@@ -28,6 +15,7 @@ const Clienti = () => {
   const [fatturaAnnuale, setFaturaAnnuale] = useState(0);
   const [dataInserimento, setDataInserimento] = useState("");
   const [dataUltimoContatto, setDataUltimoContatto] = useState("");
+  const navigate = useNavigate();
   const [nome, setNome] = useState("");
 
   useEffect(() => {
@@ -92,16 +80,13 @@ const Clienti = () => {
 
   const fetchDataInserimento = async () => {
     try {
-      const resp = await fetch(
-        `http://localhost:3001/clienti/dataInserimento?dataInserimento=${dataInserimento}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + token.accessToken,
-            "Content-type": "application/json",
-          },
-        }
-      );
+      const resp = await fetch(`http://localhost:3001/clienti/dataInserimento?dataInserimento=${dataInserimento}`, {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token.accessToken,
+          "Content-type": "application/json",
+        },
+      });
       const data = await resp.json();
       setClienti(data.content);
       setSize(data.pageable.pageSize);
@@ -135,13 +120,16 @@ const Clienti = () => {
 
   const fetchDataUltimoContatto = async () => {
     try {
-      const resp = await fetch(`http://localhost:3001/clienti/dataUltimoContatto?dataUltimoContatto=${dataUltimoContatto}`, {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + token.accessToken,
-          "Content-type": "application/json",
-        },
-      });
+      const resp = await fetch(
+        `http://localhost:3001/clienti/dataUltimoContatto?dataUltimoContatto=${dataUltimoContatto}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + token.accessToken,
+            "Content-type": "application/json",
+          },
+        }
+      );
       const data = await resp.json();
       setClienti(data.content);
       setSize(data.pageable.pageSize);
@@ -155,35 +143,20 @@ const Clienti = () => {
 
   return (
     <>
-      <Container>
+      <Container className="mt-1">
+        <h1>Lista Clienti</h1>
         <div className="d-flex justify-content-between">
-          <DropdownButton id="dropdown-basic-button" title="Ordina per">
-            <Dropdown.Item onClick={() => setOrder("nomeContatto")}>
-              Nome
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => setOrder("fatturaAnnuale")}>
-              Fattura annuale
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => setOrder("dataInserimento")}>
-              Data di inserimento
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => setOrder("dataUltimoContatto")}>
-              Data ultimo contatto
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => setOrder("sedeLegale")}>
-              Provincia
-            </Dropdown.Item>
+          <DropdownButton className="mt-2" title="Ordina per" variant="outline-primary">
+            <Dropdown.Item onClick={() => setOrder("nomeContatto")}>Nome</Dropdown.Item>
+            <Dropdown.Item onClick={() => setOrder("fatturaAnnuale")}>Fattura annuale</Dropdown.Item>
+            <Dropdown.Item onClick={() => setOrder("dataInserimento")}>Data di inserimento</Dropdown.Item>
+            <Dropdown.Item onClick={() => setOrder("dataUltimoContatto")}>Data ultimo contatto</Dropdown.Item>
+            <Dropdown.Item onClick={() => setOrder("sedeLegale")}>Provincia</Dropdown.Item>
           </DropdownButton>
-          <DropdownButton id="dropdown-basic-button" title="Filtra per">
-            <Dropdown.Item onClick={setShowFatturaAnnuale}>
-              Fattura annuale
-            </Dropdown.Item>
-            <Dropdown.Item onClick={setShowDataInserimento}>
-              Data di inserimento
-            </Dropdown.Item>
-            <Dropdown.Item onClick={setShowDataUltimoContatto}>
-              Data ultimo contatto
-            </Dropdown.Item>
+          <DropdownButton title="Filtra per" variant="outline-primary">
+            <Dropdown.Item onClick={setShowFatturaAnnuale}>Fattura annuale</Dropdown.Item>
+            <Dropdown.Item onClick={setShowDataInserimento}>Data di inserimento</Dropdown.Item>
+            <Dropdown.Item onClick={setShowDataUltimoContatto}>Data ultimo contatto</Dropdown.Item>
             <Dropdown.Item onClick={setShowNome}>Nome</Dropdown.Item>
           </DropdownButton>
         </div>
@@ -202,10 +175,7 @@ const Clienti = () => {
           <CTableBody>
             {clienti.map((c, i) => (
               <CTableRow color="light">
-                
-                <CTableHeaderCell scope="row">
-                  {c.nomeContatto}
-                </CTableHeaderCell>
+                <CTableHeaderCell scope="row">{c.nomeContatto}</CTableHeaderCell>
                 <CTableDataCell>{c.cognomeContatto}</CTableDataCell>
                 <CTableDataCell>{c.emailContatto}</CTableDataCell>
                 <CTableDataCell>{c.telefonoContatto}</CTableDataCell>
@@ -233,17 +203,19 @@ const Clienti = () => {
             </Form.Select>
           </div>
           <div>
-            Risultati da {page * size + 1} a{" "}
-            {Math.min((page + 1) * size, totaleClient)} di {totaleClient}
+            Risultati da {page * size + 1} a {Math.min((page + 1) * size, totaleClient)} di {totaleClient}
           </div>
           <div>
             <Button
+              className="me-2"
+              variant="outline-primary"
               disabled={page === 0}
               onClick={() => handlePageChange(page - 1)}
             >
               Indietro
             </Button>
             <Button
+              variant="outline-primary"
               disabled={page === totalPage - 1}
               onClick={() => handlePageChange(page + 1)}
             >
@@ -251,6 +223,9 @@ const Clienti = () => {
             </Button>
           </div>
         </div>
+        <Button variant="outline-success" onClick={() => navigate("/addClient")}>
+          Aggiungi cliente
+        </Button>
       </Container>
       <Modal show={showFatturaAnnuale} onHide={handleCloseFatturaAnnuale}>
         <Modal.Header closeButton>
